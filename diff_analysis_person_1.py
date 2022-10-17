@@ -1,3 +1,7 @@
+'''
+This script is used to generate random plaintext-ciphertext pairs.
+'''
+
 import random
 
 # constants
@@ -80,4 +84,11 @@ def full_encrypt(plaintext: int) -> int:
     return tmp
 
 if __name__ == "__main__":
-    full_encrypt(798)
+    pc_paris = dict()
+    while len(pc_paris) < PLAINTEXT_NUM:
+        plaintext = random.randint(0, MAX_VALUE)
+        if plaintext in pc_paris.keys():
+            continue
+        pc_paris[plaintext] = full_encrypt(plaintext)
+    assert(len(pc_paris) == PLAINTEXT_NUM)
+    print(pc_paris)
