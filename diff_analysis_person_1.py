@@ -1,5 +1,6 @@
 '''
-This script is used to generate random plaintext-ciphertext pairs.
+This script is used to generate random plaintext-ciphertext pairs, which
+satisfies the requirements of chosen plaintext attack.
 '''
 
 import random
