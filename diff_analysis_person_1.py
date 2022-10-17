@@ -4,7 +4,7 @@ import random
 NUM_OF_BITS = 16
 MAX_VALUE = 1 << NUM_OF_BITS - 1
 PLAINTEXT_NUM = 10000
-ENCRYPTION_ROUNDS = 4 # NOTE: round 5 is simply key mixing
+FULL_ENCRYPTION_ROUNDS = 4 # NOTE: round 5 is simply key mixing
 
 # variables
 round_keys = [55382, 42954, 53122, 38368, 40273]
@@ -67,10 +67,17 @@ def encrypt_one_round(to_encrypt: int, k: int) -> str:
     # print(res) # debug
     return res
 
-if __name__ == "__main__":
-    num_bits = 16
-    num = 55382
-    print(permutation(f"{num:0{num_bits}b}"))
+def full_encrypt(plaintext: int) -> int:
+    # print(plaintext, f"{plaintext:0{NUM_OF_BITS}b}") # debug
+    tmp = plaintext
+    for i in range(0, FULL_ENCRYPTION_ROUNDS):
+        tmp = int(encrypt_one_round(tmp, round_keys[i]), 2)
+        # print(f"Round {i + 1}:") # debug
+        # print(tmp, f"{tmp:0{NUM_OF_BITS}b}") # debug
+    # last round: simple key mixing
+    tmp ^= round_keys[FULL_ENCRYPTION_ROUNDS]
+    # print(tmp, f"{tmp:0{NUM_OF_BITS}b}") # debug
+    return tmp
 
-    encrypt_one_round(798, round_keys[0])
-    pass
+if __name__ == "__main__":
+    full_encrypt(798)
