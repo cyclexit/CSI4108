@@ -90,5 +90,6 @@ if __name__ == "__main__":
         if plaintext in pc_paris.keys():
             continue
         pc_paris[plaintext] = full_encrypt(plaintext)
+        # TODO: satisfy the chosen plaintext attack requirements
     assert(len(pc_paris) == PLAINTEXT_NUM)
     print(pc_paris)
