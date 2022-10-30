@@ -23,6 +23,18 @@ def extgcd(a: int, b: int):
         y -= x * (a / b)
         return (x, y)
 
+def euler_totient(n: int):
+    r = n
+    i = 2
+    while i * i <= n:
+        if n % i == 0:
+            r -= r // i
+            while n % i == 0:
+                n //= i
+        i += 1
+    r -= r // n
+    return r
+
 def main():
     # TODO:
     # 1. encrypt m to c
