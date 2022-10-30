@@ -36,7 +36,7 @@ def main():
     c = fast_pow(m, e, n)
 
     # 2. decrypt c without CRT, profile it
-    print("Decrypt c without CRT: ", end="")
+    print("Decrypt c without CRT:")
     start_time = time.time_ns()
     m1 = fast_pow(c, d, n)
     assert(m == m1) # make sure we get the correct plaintext
@@ -44,6 +44,16 @@ def main():
 
     # 3. decrypt c with CRT, profile it
     start_time = time.time()
+    print("Decrypt c with CRT:")
+    start_time = time.time_ns()
+    vp = fast_pow(c, d, p)
+    vq = fast_pow(c, d, q)
+    q_inv, p_inv = extgcd(q, p)
+    xp = q * q_inv
+    xq = p * p_inv
+    m2 = (vp * xp + vq * xq) % n
+    assert(m == m2) # make sure we get the correct plaintext
+    print(f"{(time.time_ns() - start_time)} ns")
 
 if __name__ == "__main__":
     main()
