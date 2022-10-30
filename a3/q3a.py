@@ -1,9 +1,13 @@
+import time
+
 e = 65537 # public key (given)
 m = 466921883457309 # (given)
 
-p = 384759392039
-q = 3495892748912
-n = p * q # public key (given)
+# p and q are 1024-bit prime numbers generated on https://asecuritysite.com/encryption/getprimen
+p = 165400444044747433312445922891272961642467363198542552546815056518492207400410183475876924235244207345582667264212152258884889029091823686598618205716016123976847711571546890139625855461023519130246843957820607537157730941623895113031816296869120611337061836462264221888001352786894176383967235037290836349441
+q = 174119558295564641396545869896429065080430412778702047563033362554797540721654305034015906940013233630828507090787295700798765934410631293607422599651923517465262898865502465770953177116144406278037285660891316806898598572536313770725851416924000582846375565373461305303155784370251386514960332483945722073697
+n = p * q # public key
+phi_n = (p - 1) * (q - 1)
 
 def fast_pow(x: int, y: int, n: int):
     res = 1;
@@ -23,29 +27,23 @@ def extgcd(a: int, b: int):
         y -= x * (a // b)
         return (x, y)
 
-def euler_totient(n: int):
-    r = n
-    i = 2
-    while i * i <= n:
-        if n % i == 0:
-            r -= r // i
-            while n % i == 0:
-                n //= i
-        i += 1
-    r -= r // n
-    return r
-
 def main():
     # 0. get the private key
-    phi_n = euler_totient(n)
     d, _ = extgcd(e, phi_n) # private key
     d %= phi_n # make sure d is positive
     
     # 1. encrypt m to c
     c = fast_pow(m, e, n)
 
-    # 2. decrypt c with CRT, profile it
-    # 3. decrypt c without CRT, profile it
+    # 2. decrypt c without CRT, profile it
+    print("Decrypt c without CRT: ", end="")
+    start_time = time.time_ns()
+    m1 = fast_pow(c, d, n)
+    assert(m == m1) # make sure we get the correct plaintext
+    print(f"{(time.time_ns() - start_time)} ns")
+
+    # 3. decrypt c with CRT, profile it
+    start_time = time.time()
 
 if __name__ == "__main__":
     main()
