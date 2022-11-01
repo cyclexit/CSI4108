@@ -16,6 +16,8 @@ Hongyi Lin, 300053082
 ## Question 1
 source code: `q1.py`
 
+![q1-res.png](q1-res.png)
+
 ## Question 2
 source code: `q2.py`
 
