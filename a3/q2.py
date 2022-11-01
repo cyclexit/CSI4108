@@ -38,17 +38,23 @@ def miller_rabin_test(n: int):
 
 def main():
     t = 5
-    max_value = (1 << 14) - 1
+    MIN_VALUE_14BIT = 1 << 13
+    MAX_VALUE_14BIT = (1 << 14) - 1
     # find 14-bit prime numbers
-    for num in range(2, max_value + 1):
+    found = False
+    while not found:
+        num = randint(MIN_VALUE_14BIT, MAX_VALUE_14BIT)
+        print(f"Try the number {num}...")
         is_composite = False
         for _ in range(0, t):
             if miller_rabin_test(num):
                 is_composite = True
                 break
-        if is_composite == False:
-            print(num, end=", ")
-    print()
+        if is_composite:
+            print(f"Oops, {num} is not 14-bit prime.\n")
+        else:
+            print(f"Ah ha, {num} is a probably 14-bit prime!")
+            found = True
 
 if __name__ == "__main__":
     main()
