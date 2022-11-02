@@ -26,6 +26,7 @@ During the encryption process, we get get the ciphertext from $m_1$ and $m_2$ as
 
 As for $K = (Y_A)^k \mod q$ when $k$ is the same, $K$ must be the same.
 Hence, we have
+
 $$ \frac{C_{2, 2}}{C_{2, 1}} = \frac{Km_2 \mod q}{Km_1 \mod q} = \frac{m_2 \mod q}{m_1 \mod q} $$
 
 From this, we can calculate $m2$ as $m_2 = (C_{2, 1})^{-1}C_{2,2}m_1 \mod q$.
