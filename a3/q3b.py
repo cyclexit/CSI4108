@@ -138,12 +138,54 @@ def ecdh_key_gen():
     kb = scalar_mult(nb, pa)
     return na, pa, nb, pb, ka, kb
 
+def fast_pow(x, y, n):
+    res = 1;
+    x = x % n;
+    while y > 0:
+        if y & 1:
+            res = (res * x) % n
+        y >>= 1
+        x = (x * x) % n
+    return res
+
+def dh_key_gen():
+    p = curve.p
+    g = 3
+    
+    # Alice's key pair
+    xa = randint(1, p - 1) # private key
+    ya = fast_pow(g, xa, p) # public key
+
+    # Bob's key pair
+    xb = randint(1, p - 1) # private key
+    yb = fast_pow(g, xb, p) # public key
+
+    # Alice's shared secret
+    ka = fast_pow(yb, xa, p)
+    # Bob's shared secret
+    kb = fast_pow(ya, xb, p)
+    return p, g, xa, ya, xb, yb, ka, kb
+
 def main():
     print(curve)
     start_time = time.time_ns()
     na, pa, nb, pb, ka, kb = ecdh_key_gen()
     print(f"ECDH Time: {(time.time_ns() - start_time)} ns")
-    pass
+    print("ECDH data:")
+    print(f"Alice:\n\tprivate_key = {na}\n\tpublic_key = {pa}\n\tshared_secret = {ka}")
+    print(f"Bob:\n\tprivate_key = {nb}\n\tpublic_key = {pb}\n\tshared_secret = {kb}")
+
+    print()
+
+    start_time = time.time_ns()
+    p, g, xa, ya, xb, yb, ka, kb = dh_key_gen()
+    print(f"ordinary D-H Time: {(time.time_ns() - start_time)} ns")
+    print("ordinary D-H data:")
+    print(f"p = {p}")
+    print(f"g = {g}")
+    print(f"Alice:\n\tprivate_key = {xa}\n\tpublic_key = {ya}\n\tshared_secret = {ka}")
+    print(f"Bob:\n\tprivate_key = {xb}\n\tpublic_key = {yb}\n\tshared_secret = {kb}")
+
 
 if __name__ == "__main__":
     main()
