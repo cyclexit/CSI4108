@@ -52,4 +52,8 @@ source code: `q3a.py`
 ![q3a-timing-res.png](q3a-timing-res.png)
 
 ### Part b
+source code: `q3b.py`
 
+It seems that the speed of the normal D-H is faster than ECDH with the help of the fast exponentiation algorithm. Besides, this timing result may also be related to the implementation. For the ECDH, the whole process involves much more function calls than normal D-H, which may cause the longer execution time.
+
+![q3b-res.png](q3b-res.png)
