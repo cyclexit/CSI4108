@@ -38,9 +38,11 @@ def main():
     key = b"This is my simple key."
 
     my_res =  my_hmac(key, message)
+    print("My result:")
     print(my_res.digest())
 
     truth = hmac.HMAC(key, message, digestmod=hashlib.sha512)
+    print("Python hmac lib result:")
     print(truth.digest())
     
     if my_res.digest() == truth.digest():
