@@ -28,8 +28,10 @@ def my_hmac(key: bytes, msg: bytes) -> bytes:
 def main():
     message = b"I am using this input string to test my own implementation of HMAC-SHA-512."
     key = b"This is my simple key."
-    print(my_hmac(key, message))
-    print()
+    my_res =  my_hmac(key, message)
+    print(len(my_res), my_res)
+    truth = hmac.HMAC(key, message, digestmod=hashlib.sha512).digest()
+    print(len(truth), truth)
 
 if __name__ == "__main__":
     main()
