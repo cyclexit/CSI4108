@@ -9,15 +9,18 @@ def byte_xor(a: bytes, b: bytes) -> bytes:
 def my_hmac(key: bytes, msg: bytes):
     IPAD = 0x36
     OPAD = 0x5c
+    block_size = OUTPUT_BYTE_LEN * (len(msg) // OUTPUT_BYTE_LEN)
+    if len(msg) % OUTPUT_BYTE_LEN > 0:
+        block_size += OUTPUT_BYTE_LEN
     full_ipad = 0
     full_opad = 0
-    for _ in range(0, 128):
+    for _ in range(0, block_size):
         full_ipad = (full_ipad << 8) + IPAD
         full_opad = (full_opad << 8) + OPAD
-    full_ipad = full_ipad.to_bytes(128, "little")
-    full_opad = full_opad.to_bytes(128, "little")
-    if len(key) < 128:
-        key = key + b'\x00' * (128 - len(key))
+    full_ipad = full_ipad.to_bytes(block_size, "little")
+    full_opad = full_opad.to_bytes(block_size, "little")
+    if len(key) < block_size:
+        key = key + b'\x00' * (block_size - len(key))
     inner = hashlib.sha512(byte_xor(key, full_ipad) + msg)
     outer = hashlib.sha512(byte_xor(key, full_opad) + inner.digest())
     return outer
