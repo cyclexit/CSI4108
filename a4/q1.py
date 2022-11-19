@@ -6,9 +6,6 @@ OUTPUT_BYTE_LEN = OUTPUT_BIT_LEN // 8
 def byte_xor(a: bytes, b: bytes) -> bytes:
     return (int.from_bytes(a, 'big') ^ int.from_bytes(b, 'big')).to_bytes(max(len(a), len(b)), 'big')
 
-def byte_or(a: bytes, b: bytes) -> bytes:
-    return (int.from_bytes(a, 'big') | int.from_bytes(b, 'big')).to_bytes(max(len(a), len(b)), 'big')
-
 def my_hmac(key: bytes, msg: bytes) -> bytes:
     IPAD = 0x36
     OPAD = 0x5c
@@ -20,9 +17,9 @@ def my_hmac(key: bytes, msg: bytes) -> bytes:
     full_ipad = full_ipad.to_bytes(OUTPUT_BYTE_LEN, "big")
     full_opad = full_opad.to_bytes(OUTPUT_BYTE_LEN, "big")
     if len(key) < OUTPUT_BYTE_LEN:
-        key = key + b'\x00' * (OUTPUT_BYTE_LEN - len(key))
-    inner = hashlib.sha512(byte_or(byte_xor(key, full_ipad), msg)).digest()
-    outer = hashlib.sha512(byte_or(byte_xor(key, full_opad), inner)).digest()
+        key = b'\x00' * (OUTPUT_BYTE_LEN - len(key)) + key
+    inner = hashlib.sha512(byte_xor(key, full_ipad) + msg).digest()
+    outer = hashlib.sha512(byte_xor(key, full_opad) + inner).digest()
     return outer
 
 def main():
