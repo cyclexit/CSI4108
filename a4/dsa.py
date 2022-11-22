@@ -2,9 +2,24 @@
     The script to implement DSA.
 '''
 
-class Dsa:
-    # 1024-bit prime generated on https://asecuritysite.com/encryption/getprimen.
-    p = 122727601331362196256320614825994745261180084640875573500354145079401305058408145479727474780222062274515656953116192984694653041627428607701888380909829641355178938145822810216707935904997442559170303277526692121365192370068805095986797320862059010969177983287955533113322628977650649119413520055439276236391
+from random import randint
 
-    def __init__(self):
+import hashlib
+from math_helper import *
+
+class Dsa:
+
+    def __init__(self, p, q, g):
+        self.p = p
+        self.q = q
+        self.g = g
+        self.k = randint(1, self.q - 1)
+        self.k_inv, _ = extgcd(self.k, q)
+
+    def key_gen(self):
+        self.private_key = randint(1, self.q - 1)
+        self.public_key = fast_pow(self.g, self.private_key, self.p)
+        return (self.private_key, self.public_key)
+
+    def sign(self, m: str):
         pass
