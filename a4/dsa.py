@@ -29,13 +29,13 @@ class Dsa:
 
     def sign(self, m: int, private_key: int):
         m_hash = int(self.hash(m.to_bytes(self.q.bit_length(), 'big')).hexdigest(), 16) % self.q
-        print(f"sign: m_hash = {m_hash}") # debug
+        # print(f"sign: m_hash = {m_hash}") # debug
         s = ((m_hash + private_key * self.r) * self.k_inv) % self.q
         return (self.r, s)
 
     def verify(self, m: int, r: int, s: int, public_key: int):
         m_hash = int(self.hash(m.to_bytes(self.q.bit_length(), 'big')).hexdigest(), 16) % self.q
-        print(f"verify: m_hash = {m_hash}") # debug
+        # print(f"verify: m_hash = {m_hash}") # debug
         s_inv, _ = extgcd(s, self.q)
         s_inv %= self.q
         u1 = (m_hash * s_inv) % self.q
