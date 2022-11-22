@@ -17,24 +17,24 @@ class Dsa:
         self.update_k_and_r()
 
     def key_gen(self):
-        self.private_key = randint(1, self.q - 1)
-        self.public_key = fast_pow(self.g, self.private_key, self.p)
-        return (self.private_key, self.public_key)
+        private_key = randint(1, self.q - 1)
+        public_key = fast_pow(self.g, private_key, self.p)
+        return (private_key, public_key)
 
     def update_k_and_r(self):
         self.k = randint(1, self.q - 1)
         self.k_inv, _ = extgcd(self.k, self.q)
         self.r = fast_pow(self.g, self.k, self.p) % self.q
 
-    def sign(self, m: int):
+    def sign(self, m: int, private_key):
         m_hash = int(self.hash(m.to_bytes(self.q.bit_length(), 'big')).hexdigest(), 16)
-        s = ((m_hash + self.private_key * self.r) * self.k_inv) % self.q
+        s = ((m_hash + private_key * self.r) * self.k_inv) % self.q
         return (self.r, s)
 
-    def verify(self, r, s):
+    def verify(self, r, s, public_key):
         s_hash = int(self.hash(s.to_bytes(self.q.bit_length(), 'big')).hexdigest(), 16)
         s_inv, _ = extgcd(s, self.q)
         u1 = (s_hash * s_inv) % self.q
         u2 = r * s_inv
-        cksum = (fast_pow(self.g, u1, self.p) * fast_pow(self.public_key, u2, self.p)) % self.p % self.q
+        cksum = (fast_pow(self.g, u1, self.p) * fast_pow(public_key, u2, self.p)) % self.p % self.q
         return cksum == r
