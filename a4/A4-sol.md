@@ -34,4 +34,4 @@ As we can see the results in the screenshot above, the `k` is compromised each t
 ## Question 4
 Build the block cipher based on the Feistel Netowrk, and use the hash functions instead of the S-boxes in the round function in Feistel Network.
 
-Because of the nice property of the Feistel Network, the hash functions and round function are not required to be invertible. Each time the decryption is needed, just use the round keys in the reverse order to do the decryption.
+Because of the nice property of the Feistel Network, the hash functions and round function are not required to be invertible. Each time the decryption is needed, just use the round keys in the reverse order to decrypt the ciphertext.
