@@ -2,6 +2,7 @@ from dsa import Dsa
 from dsa_num import *
 
 if __name__ == "__main__":
+    # Use SHA1 as the hash function by default as required
     dsa_inst = Dsa(p, q, g)
     # question 2
     q2_x, q2_y = dsa_inst.key_gen()

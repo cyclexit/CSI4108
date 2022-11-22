@@ -13,7 +13,7 @@ class Dsa:
         self.p = p
         self.q = q
         self.g = g
-        self.hash = hash()
+        self.hash = hash
         self.update_k_and_r()
 
     def key_gen(self):
@@ -28,14 +28,14 @@ class Dsa:
         self.r = fast_pow(self.g, self.k, self.p) % self.q
 
     def sign(self, m: int, private_key: int):
-        self.hash.update(m.to_bytes(self.q.bit_length(), 'big'))
-        m_hash = int(self.hash.hexdigest(), 16) % self.q
+        m_hash = int(self.hash(m.to_bytes(self.q.bit_length(), 'big')).hexdigest(), 16) % self.q
+        print(f"sign: m_hash = {m_hash}") # debug
         s = ((m_hash + private_key * self.r) * self.k_inv) % self.q
         return (self.r, s)
 
     def verify(self, m: int, r: int, s: int, public_key: int):
-        self.hash.update(m.to_bytes(self.q.bit_length(), 'big'))
-        m_hash = int(self.hash.hexdigest(), 16) % self.q
+        m_hash = int(self.hash(m.to_bytes(self.q.bit_length(), 'big')).hexdigest(), 16) % self.q
+        print(f"verify: m_hash = {m_hash}") # debug
         s_inv, _ = extgcd(s, self.q)
         s_inv %= self.q
         u1 = (m_hash * s_inv) % self.q
