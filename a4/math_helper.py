@@ -1,4 +1,4 @@
-from random import randint
+from random import randint, randrange
 
 def fast_pow(x, y, n):
     res = 1;
@@ -43,3 +43,15 @@ def miller_rabin_test(n: int):
         e <<= 1
 
     return True # composite
+
+def is_prime(num, t):
+    for _ in range(0, t):
+        if miller_rabin_test(num):
+            return False
+    return True
+
+def get_prime(bits):
+    while True:
+        num = randrange(1 << (bits - 1), 1 << bits)
+        if is_prime(num, 5):
+            return num
