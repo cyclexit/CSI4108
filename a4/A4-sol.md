@@ -8,6 +8,7 @@ Hongyi Lin, 300053082
   - [General](#general)
   - [Question 1](#question-1)
   - [Question 2 and Question 3](#question-2-and-question-3)
+  - [Question 4](#question-4)
 
 ***
 
@@ -29,3 +30,8 @@ source code:
 ![q2-q3-res.png](q2-q3-res.png)
 
 As we can see the results in the screenshot above, the `k` is compromised each time from the two signatures using the same `k`. From the compromised `k`, the private key `x` can also be recovered each time.
+
+## Question 4
+Build the block cipher based on the Feistel Netowrk, and use the hash functions instead of the S-boxes in the round function in Feistel Network.
+
+Because of the nice property of the Feistel Network, the hash functions and round function are not required to be invertible. Each time the decryption is needed, just use the round keys in the reverse order to do the decryption.
