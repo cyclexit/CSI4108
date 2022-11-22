@@ -53,17 +53,4 @@ class Dsa:
     p = 122727601331362196256320614825994745261180084640875573500354145079401305058408145479727474780222062274515656953116192984694653041627428607701888380909829641355178938145822810216707935904997442559170303277526692121365192370068805095986797320862059010969177983287955533113322628977650649119413520055439276236391
 
     def __init__(self):
-        self.q = self._find_q()
-        print(self.q)
-
-    def _find_q(self) -> int:
-        for q in range(1 << 159, 1 << 160):
-            is_composite = False
-            for _ in range(0, 8):
-                if miller_rabin_test(q):
-                    is_composite = True
-                    break
-            if is_composite:
-                continue
-            if ((self.p - 1) % q == 0) and ((self.p - 1) % (q * q) > 0):
-                return q
+        pass
