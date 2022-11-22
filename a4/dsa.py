@@ -35,6 +35,6 @@ class Dsa:
         s_hash = int(self.hash(s.to_bytes(self.q.bit_length(), 'big')).hexdigest(), 16)
         s_inv, _ = extgcd(s, self.q)
         u1 = (s_hash * s_inv) % self.q
-        u2 = r * s_inv
+        u2 = r * s_inv % self.q
         cksum = (fast_pow(self.g, u1, self.p) * fast_pow(public_key, u2, self.p)) % self.p % self.q
         return cksum == r
