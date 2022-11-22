@@ -26,5 +26,5 @@ class Dsa:
         self.k_inv, _ = extgcd(self.k, self.q)
         self.r = fast_pow(self.g, self.k, self.p) % self.q
 
-    def sign(self, m: str):
+    def sign(self, m: int):
         pass
