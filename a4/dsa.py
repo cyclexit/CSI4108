@@ -27,4 +27,6 @@ class Dsa:
         self.r = fast_pow(self.g, self.k, self.p) % self.q
 
     def sign(self, m: int):
-        pass
+        m_hash = int(self.hash(m.to_bytes(self.q.bit_length(), 'big')).hexdigest(), 16)
+        s = ((m_hash + self.private_key * self.r) * self.k_inv) % self.q
+        return (self.r, s)
