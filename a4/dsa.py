@@ -57,8 +57,7 @@ class Dsa:
         print(self.q)
 
     def _find_q(self) -> int:
-        while True:
-            q = randint(1 << 159, (1 << 160) - 1)
+        for q in range(1 << 159, 1 << 160):
             is_composite = False
             for _ in range(0, 8):
                 if miller_rabin_test(q):
