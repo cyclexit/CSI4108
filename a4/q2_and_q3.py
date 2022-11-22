@@ -14,6 +14,7 @@ if __name__ == "__main__":
         print("Question 2 signature is verified!")
     else:
         print("Question 2 signature isn't verified...")
+    print()
 
     # question 3
     q3_m = 8161474912883
@@ -25,5 +26,22 @@ if __name__ == "__main__":
         print("Question 3 signature is verified!")
     else:
         print("Question 3 signature isn't verified...")
+    print()
     # try to recover k
-    m_hash_diff = dsa_inst.hash_int(q2_m) - dsa_inst.hash_int(q3_m)
+    m_hash_diff = (dsa_inst.hash_int(q2_m) - dsa_inst.hash_int(q3_m)) % dsa_inst.q
+    s_diff = (q2_s - q3_s) % dsa_inst.q
+    s_diff_inv, _ = extgcd(s_diff, dsa_inst.q)
+    s_diff_inv %= dsa_inst.q
+    k_compromised = (m_hash_diff * s_diff_inv) % dsa_inst.q
+    print(f"compromised k = {k_compromised}")
+    print(f"original k    = {dsa_inst.k}")
+    if k_compromised == dsa_inst.k:
+        print("k is compromised!")
+    print()
+    r_inv, _ = extgcd(dsa_inst.r, dsa_inst.q)
+    x_compromised = (k_compromised * q2_s - dsa_inst.hash_int(q2_m)) * r_inv % dsa_inst.q
+    print(f"compromised x (private key) = {x_compromised}")
+    print(f"original x (private key)    = {x}")
+    if x_compromised == x:
+        print("x (private key) is recovered using compromised k!")
+    print()
