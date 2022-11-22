@@ -30,3 +30,11 @@ class Dsa:
         m_hash = int(self.hash(m.to_bytes(self.q.bit_length(), 'big')).hexdigest(), 16)
         s = ((m_hash + self.private_key * self.r) * self.k_inv) % self.q
         return (self.r, s)
+
+    def verify(self, r, s):
+        s_hash = int(self.hash(s.to_bytes(self.q.bit_length(), 'big')).hexdigest(), 16)
+        s_inv, _ = extgcd(s, self.q)
+        u1 = (s_hash * s_inv) % self.q
+        u2 = r * s_inv
+        cksum = (fast_pow(self.g, u1, self.p) * fast_pow(self.public_key, u2, self.p)) % self.p % self.q
+        return cksum == r
